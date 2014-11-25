@@ -19,7 +19,7 @@ LotteryTicket::LotteryTicket(int ticketNum)
 }
 
 LotteryTicket::LotteryTicket(int ticketNum, bool fillOrGenerate)
-:ticketNumber(ticketNum), winner(false), winnerType('X')
+		:ticketNumber(ticketNum), winner(false), winnerType('X')
 {
 	if(fillOrGenerate)
 		inputLuckyNumbers();
@@ -52,7 +52,7 @@ void LotteryTicket::setTypeOfPrize(char typeOfPrize)
 	winnerType = typeOfPrize;
 }
 
-vector<int> LotteryTicket::getLuckyNumbersList()
+vector<int>& LotteryTicket::getLuckyNumbersList()
 {
 	return luckyNumbers;
 }
@@ -80,10 +80,6 @@ void LotteryTicket::inputLuckyNumbers()
 			cout << "I am sorry. You chose an invalid entry.\nPlease try again.\n";
 		}
 	}
-	
-	//print test
-	cout << endl << "Your Ticket (No." << ticketNumber << "):\n";
-	printVector();
 }
 
 void LotteryTicket::generateLuckyNumbers()
@@ -94,16 +90,10 @@ void LotteryTicket::generateLuckyNumbers()
 		nextNum = rand()%60+1;
 		
 		if(nextNum >= 1 && nextNum <= 60) {
-			if(checkRepetitionOf(nextNum)) 
-				continue;
-			else
+			if(!(checkRepetitionOf(nextNum))) 
 				luckyNumbers.push_back(nextNum);
 		}
 	}
-	
-	//print test
-	cout << endl << "Your Ticket (No." << ticketNumber << "):\n";
-	printVector();
 }
 
 bool LotteryTicket::checkRepetitionOf(int nextNum)
@@ -120,17 +110,3 @@ bool LotteryTicket::checkRepetitionOf(int nextNum)
 	return numFound;
 }
 
-//Just a blackbox vector printing function.
-void LotteryTicket::printVector()
-{
-	for(int i = 0; i < luckyNumbers.size(); i++) {
-		if (i == 0 && i == luckyNumbers.size()-1)
-			cout << endl << "{" << luckyNumbers[i] << "}\n";
-		else if(i == 0)
-			cout << endl << "{" << luckyNumbers[i] << ", ";
-		else if(i == luckyNumbers.size()-1)
-			cout << luckyNumbers[i] << "}\n";
-		else
-			cout << luckyNumbers[i] << ", ";
-	}
-}

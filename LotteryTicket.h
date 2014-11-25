@@ -27,7 +27,7 @@ public:
 	void setTypeOfPrize(char);
 	//G - Golden, S - Silver, B - Bronze, L - Lucky, X - no win
 	
-	vector<int> getLuckyNumbersList();
+	vector<int>& getLuckyNumbersList();
 	void inputLuckyNumbers();
 	void generateLuckyNumbers();
 	
@@ -42,13 +42,9 @@ private:
 	vector<int>luckyNumbers;
 	
 	bool checkRepetitionOf(int);
-	
-	//print test
-	//Just a blackbox vector printing function.
-	void printVector();
-	
-	
+	  
 };
 
 
 #endif
+

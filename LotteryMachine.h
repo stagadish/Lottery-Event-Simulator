@@ -21,22 +21,39 @@ class LotteryMachine
 public:
 	double getPricePerTicket();
 	double getTotalIncome();
-	double getTotalPriceSum();
+	double getTotalPrizeSum();
 	int getNumOfTicketsSold();
 	
-	LotteryTicket generateNewTicket();
+	void generateNewTicket(bool);
 	void findWinners();
-	void printWins();
+	void printWins();	
+	void printTicket(LotteryTicket);
+	void printLastTicket();
+	void printAllTickets();
+	
+	//Constructors
+	LotteryMachine(double);
+	LotteryMachine();
+	
+	//Temp test
+	void printWinningTicket();
 
 	
 private:
-	double pricePerTicket, totalIncome, totalPriceSum;
-	int numOfTicketsSold, ticketNumCounter;
-	LotteryTicket winningTicket;
+	double pricePerTicket, totalPrizeSum;
+	int ticketNumCounter;
+	LotteryTicket *winningTicket;
 	
-	vector<LotteryTicket>allTickets;
-//	vector<LotteryTicket>winningTickets;
+	bool goldOrSilverWinner(LotteryTicket&);
+	bool bronzeWinner(LotteryTicket&);
+	bool luckyTenWinner(LotteryTicket&);
+	void sortTicket(LotteryTicket&);
+	void swap(int&, int&);
+	
+	vector<LotteryTicket> allTickets;
+	vector<LotteryTicket*> winners;
 };
 
 
 #endif
+
