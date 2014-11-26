@@ -67,30 +67,30 @@ int main () {
 	
 	
 	
-	do {												//Begin game with the first week.
+	do {								//Begin game with the first week.
 		
 		int numOfTicketsPurchased = 0, choice = 0;
 		int totalPlayers = rand()%15000+15001;			//between 15000 to 30000 players <-- adjust here for more/less.
 		
 		int playerTurn = rand()%totalPlayers+1;			//Simulate a random entry point for the user so his ticket will
-														//not always be the first ticket.
+									//not always be the first ticket.
 		
 		weeks.push_back(LotteryGame(TICKETPRICE, weekNum));		//Add a new game. Generate new lucky numbers.
 		
-//		//test for wins									//Uncomment to print winning ticket for the week
+//		//test for wins						//Uncomment to print winning ticket for the week
 //		cout << endl << "Winning Ticket:\n";			//And test for Gold/Silver/Bronze winners...
-//		weeks.back().printWinningTicket();				//Which NEVER occurs.
+//		weeks.back().printWinningTicket();			//Which NEVER occurs.
 		
-		cout << "\n\n\n\n***********************\n";							//How many tickets
+		cout << "\n\n\n\n***********************\n";				//How many tickets
 		cout << "Welcome to week No. " << weeks.back().getWeekNumber() << endl	//would the user like
-			 << "One ticket: $" << TICKETPRICE << endl							//to buy?
+			 << "One ticket: $" << TICKETPRICE << endl			//to buy?
 			 << "***********************\n"
 			 << "How many would you like to purchase? ";
 		cin >> numOfTicketsPurchased;
 		
 		for(int i = 0; i < totalPlayers; i++) {			//Begin mass purchase of tickets.
 			
-			if(i == playerTurn) {											//If it's the user's turn
+			if(i == playerTurn) {								//If it's the user's turn
 				for(int j = 0; j < numOfTicketsPurchased; j++) {			//begin interaction
 					cout << endl << "Ticket " << j+1 << ":\n";
 					cout << endl << "Enter '1' for automatic values.\n"
@@ -103,7 +103,7 @@ int main () {
 						weeks.back().generateNewTicket(true);
 					
 					cout << endl << "Your ticket:";
-					weeks.back().printLastTicket();							//print the ticket he purchased.
+					weeks.back().printLastTicket();			//print the user's new ticket.
 				}
 				
 				i += numOfTicketsPurchased;
