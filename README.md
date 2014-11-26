@@ -1,4 +1,4 @@
-LotteryMachine
+Lottery-Event-Simulator
 ==============
 Date: 11.25.2014
 Author: Gil Dekel
