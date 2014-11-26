@@ -1,17 +1,57 @@
+/* ****************************************************************************
+ *  main.cpp
+ *  Lottery
+ *
+ *  Created by Gil Dekel on 11/8/14.
+ *  Copyright 2014 aClass. All rights reserved.
+ * ****************************************************************************
+ * On my honor,
+ * The following program is a result of personal effort. I have not discussed
+ * with anyone other than my instructor or any appropriate person in charge
+ * of the class. I have not used code or portion of code from another student,
+ * or any other unauthorized source, either modified or unmodified.
+ *
+ * If any C++ language code or documentation used in my program was obtained
+ * from another source, such as a text book or course notes, that has been
+ * clearly noted with a proper citation in the comments of my program.
+ *
+ * I have not designed this program in such a way as to defeat or
+ * interfere with the normal operation of the eniac system or cslab
+ * machines at Hunter College .
+ *
+ * This is a solution to Professor Ngnosse's
+ * Fall2014 Project 2 - Choice B: The Lottery Machine Simulator.
+ * ****************************************************************************
+ * This program simulates a weekly Lottery event. Each week, a new game begins
+ * with new winning numbers.
+ * 
+ * This is the driver program. It interact with the user.
+ * The main method holds a vector of `LotteryGame` objects. With each iteration
+ * of the program, a new instance of `LotteryGame` is created and all
+ * operations are made on it. At the end of each iteration, the a winning
+ * tickets are printed with some additional statistics. In addition, the 
+ * week counter is incremented and the user is asked if he would like
+ * to play again. The program ends when the user choose no for an answer.
+ * ****************************************************************************
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>
 using namespace std;
 #include "LotteryTicket.h"
-#include "LotteryMachine.h"
+#include "LotteryGame.h"
 
 const double TICKETPRICE = 5.00;
 
 int main () {
 	
 	srand(time(0));
+	cout.setf(ios::fixed);
+	cout.setf(ios::showpoint);
+	cout.precision(2);
 
-	vector<LotteryMachine> weeks;
+	vector<LotteryGame> weeks;
 	int weekNum = 1;
 	char yesOrNo = 'y';
 	
@@ -27,29 +67,31 @@ int main () {
 	
 	
 	
-	do {									//Begin game with the first week.
+	do {												//Begin game with the first week.
 		
 		int numOfTicketsPurchased = 0, choice = 0;
-		int totalPlayers = rand()%15000+15001;			//between 15000 to 30000 players <-- adjust here for less.
-		int playerTurn = rand()%totalPlayers+1;
+		int totalPlayers = rand()%15000+15001;			//between 15000 to 30000 players <-- adjust here for more/less.
 		
-		weeks.push_back(LotteryMachine(TICKETPRICE));
+		int playerTurn = rand()%totalPlayers+1;			//Simulate a random entry point for the user so his ticket will
+														//not always be the first ticket.
+		
+		weeks.push_back(LotteryGame(TICKETPRICE, weekNum));		//Add a new game. Generate new lucky numbers.
 		
 //		//test for wins									//Uncomment to print winning ticket for the week
 //		cout << endl << "Winning Ticket:\n";			//And test for Gold/Silver/Bronze winners...
 //		weeks.back().printWinningTicket();				//Which NEVER occurs.
 		
-		cout << "\n\n\n\n***********************\n";
-		cout << "Welcome to week No. " << weekNum << endl
-			 << "One ticket: $" << TICKETPRICE << endl
+		cout << "\n\n\n\n***********************\n";							//How many tickets
+		cout << "Welcome to week No. " << weeks.back().getWeekNumber() << endl	//would the user like
+			 << "One ticket: $" << TICKETPRICE << endl							//to buy?
 			 << "***********************\n"
 			 << "How many would you like to purchase? ";
 		cin >> numOfTicketsPurchased;
 		
-		for(int i = 0; i < totalPlayers; i++) {
+		for(int i = 0; i < totalPlayers; i++) {			//Begin mass purchase of tickets.
 			
-			if(i == playerTurn) {
-				for(int j = 0; j < numOfTicketsPurchased; j++) {
+			if(i == playerTurn) {											//If it's the user's turn
+				for(int j = 0; j < numOfTicketsPurchased; j++) {			//begin interaction
 					cout << endl << "Ticket " << j+1 << ":\n";
 					cout << endl << "Enter '1' for automatic values.\n"
 					<< "Enter '2' for entering values manually.";
@@ -61,7 +103,7 @@ int main () {
 						weeks.back().generateNewTicket(true);
 					
 					cout << endl << "Your ticket:";
-					weeks.back().printLastTicket();
+					weeks.back().printLastTicket();							//print the ticket he purchased.
 				}
 				
 				i += numOfTicketsPurchased;
@@ -69,21 +111,10 @@ int main () {
 			} else 
 				weeks.back().generateNewTicket(false);
 		}
-		
-		cout << "\n\n\n\n$$$ $$$ $$$ $$$ $$$ $$$ WEEK [" << weekNum << "] WINNERS ARE: $$$ $$$ $$$ $$$ $$$ $$$\n"; 
-	
+
 		weeks.back().findWinners();
-		weeks.back().printWins();
-		
-		cout << "\n$$$ $$$ $$$ $$$ $$$ $$$ WEEK [" << weekNum << "] END OF REPORT $$$ $$$ $$$ $$$ $$$ $$$\n\n"; 
-		
-		cout << "\n\n\n\n% % % % % % % % % % % % WEEK [" << weekNum << "] STATISTICS % % % % % % % % % % % %\n";
-		cout << "Tickets sold this week: " << weeks.back().getNumOfTicketsSold() << endl;
-		cout << "Total income from tickets sale: $" << weeks.back().getTotalIncome() << endl;
-		cout << "Total amount of prizes distributed: $" << weeks.back().getTotalPrizeSum() << endl;
-		cout << "\nProfit -> $" << weeks.back().getTotalIncome()-weeks.back().getTotalPrizeSum() << endl;
-		cout << "\n% % % % % % % % % % % % WEEK [" << weekNum << "] END OF STATISTICS % % % % % % % % %\n\n";
-		
+		weeks.back().printWinningTickets();
+		weeks.back().printStatistics();
 		weekNum++;
 		
 		cout << "Would you like to play again? (y/n) ";

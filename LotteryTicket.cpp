@@ -1,10 +1,12 @@
-/*
+/* ****************************************************************************
  *  LotteryTicket.cpp
  *  Lottery
  *
  *  Created by Gil Dekel on 11/8/14.
- *  Copyright 2014 Happy Palm Tree. All rights reserved.
- *
+ *  Copyright 2014 aClass. All rights reserved.
+ * ****************************************************************************
+ * Implementation of LotteryTicket.h
+ * ****************************************************************************
  */
 #include <iostream>
 #include <vector>
@@ -12,12 +14,22 @@
 using namespace std;
 #include "LotteryTicket.h"
 
+//*************
+//Constructors:
+//*************
+
+//Initialize an instance with a ticket number given as an argument.
+//Generate numbers automatically.
 LotteryTicket::LotteryTicket(int ticketNum)
 		:ticketNumber(ticketNum), winner(false), winnerType('X')
 {
 	generateLuckyNumbers();
 }
 
+//Initialize an instance with a ticket number given as an argument,
+//and a boolean stating the user's choice regarding the method of
+//value inputs (manually/automatically).
+//Generate numbers manually if true, automatically if false.
 LotteryTicket::LotteryTicket(int ticketNum, bool fillOrGenerate)
 		:ticketNumber(ticketNum), winner(false), winnerType('X')
 {
@@ -27,6 +39,11 @@ LotteryTicket::LotteryTicket(int ticketNum, bool fillOrGenerate)
 		generateLuckyNumbers();
 }
 
+//************************
+//Public Function Members:
+//************************
+
+//Accessors
 int LotteryTicket::getTicketNumber()
 {
 	return ticketNumber;
@@ -37,26 +54,34 @@ bool LotteryTicket::getWinStatus()
 	return winner;
 }
 
-void LotteryTicket::setWinStatus(bool isWinner)
-{
-	winner = isWinner;
-}
-
 char LotteryTicket::getTypeOfPrize()
 {
 	return winnerType;
-}
-
-void LotteryTicket::setTypeOfPrize(char typeOfPrize)
-{
-	winnerType = typeOfPrize;
 }
 
 vector<int>& LotteryTicket::getLuckyNumbersList()
 {
 	return luckyNumbers;
 }
+//end of Accessors.
 
+
+//Mutators
+void LotteryTicket::setWinStatus(bool isWinner)
+{
+	winner = isWinner;
+}
+
+void LotteryTicket::setTypeOfPrize(char typeOfPrize)
+{
+	winnerType = typeOfPrize;
+}
+//end of Mutators.
+
+
+
+//Traverse the vector and place user defined
+//values. 1 to 60. No repetition allowed.
 void LotteryTicket::inputLuckyNumbers()
 {
 	int counter = 1, nextNum = 0;
@@ -82,6 +107,8 @@ void LotteryTicket::inputLuckyNumbers()
 	}
 }
 
+//Traverse the vector and place auto generated
+//values. 1 to 60. No repetition allowed.
 void LotteryTicket::generateLuckyNumbers()
 {
 	int nextNum = 0;
@@ -96,6 +123,15 @@ void LotteryTicket::generateLuckyNumbers()
 	}
 }
 
+
+
+//*************************
+//Private Member Functions:
+//*************************
+
+//Traverse the vector and look for given argument.
+//If found, break the iteration and return true.
+//If not, return false.
 bool LotteryTicket::checkRepetitionOf(int nextNum)
 {
 	bool numFound = false;
